@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Search</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <center><h1>WEATHER APP</h1></center>
+    <div class="box">
+    <div class="search-container">
+        <input type="text" id="locationInput" placeholder="Enter location">
+        <button onclick="searchWeather()">Search</button>
+    </div>
+    <div class="weather">
+        <p><strong>Condition:</strong> <span class="w condition"></span></p>
+        <p><strong>Humidity:</strong> <span class="w humidity"></span></p>
+        <p><strong>Precipitation (mm):</strong> <span class="w precip_mm"></span></p>
+        <p><strong>Pressure:</strong> <span class="w pressure_mb"></span> mb</p>
+        <p><strong>Temperature (C):</strong> <span class="w temp_c"></span>°C</p>
+        <p><strong>Wind Speed:</strong> <span class="w wind_kph"></span> kph</p>
+    </div>
+</div>
+    <script>
+        function searchWeather() {
+            const location = document.getElementById('locationInput').value;
+            const weatherInfo = document.querySelector('.weather');
+            fetch(`https://api.weatherapi.com/v1/current.json?key=3cd32126fc4a45e7aef60728242204&q=${location}`, {mode: 'cors'})
+                .then(function(response) {
+                    // console.log('data is',response);
+                    return response.json();
+                })
+                .then(function(data) {
+                    console.log('data is',data);
+                    const current = data.current;
+                    weatherInfo.querySelector('.condition').textContent = current.condition.text;
+                    weatherInfo.querySelector('.humidity').textContent = current.humidity;
+                    weatherInfo.querySelector('.precip_mm').textContent = current.precip_mm;
+                    weatherInfo.querySelector('.pressure_mb').textContent = current.pressure_mb;
+                    weatherInfo.querySelector('.temp_c').textContent = current.temp_c;
+                    weatherInfo.querySelector('.wind_kph').textContent = current.wind_kph;
+                })
+                .catch(function(error) {
+                    console.log('Error:', error);
+                });
+        }
+    </script>
+</body>
+</html>
